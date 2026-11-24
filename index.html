@@ -1,0 +1,243 @@
+<title>Heartbreaking Beauty</title>
+<meta name="description" content="Heartbreaking Beauty — architecture magazine.">
+<script>
+/* Suisse Intl (Swiss Typefaces EULA, Lizenznehmer: Tjark Schade). Die Lizenz erlaubt Einbettung nur auf einer Domain des Lizenznehmers,
+   daher lädt die Schrift nur auf den unten eingetragenen Domains (und lokal zum Testen). Sonst greift Helvetica. */
+(function(){
+  var DOMAINS=['heartbreaking.beauty','www.heartbreaking.beauty','heartbreakingbeauty.xyz','www.heartbreakingbeauty.xyz','localhost','127.0.0.1',''];
+  if(DOMAINS.indexOf(location.hostname)<0)return;
+  var st=document.createElement('style');
+  st.textContent='@font-face{font-family:"Suisse Intl";src:url(fonts/SuisseIntl-Bold.woff2) format("woff2");font-weight:700;font-display:swap}'+
+                 '@font-face{font-family:"Suisse Intl";src:url(fonts/SuisseIntl-Regular.woff2) format("woff2");font-weight:400;font-display:swap}';
+  document.head.appendChild(st);
+})();
+</script>
+<style>
+/* Layout: alles hängt an der Mittelachse. Bilder bestehen aus C, M, Y und K als Druckschichten (multiply auf Weiss), die bei Berührung auseinanderbrechen. */
+:root{
+  color-scheme:light;
+  --bg:#fff;--fg:#000;--mute:#7a7a7a;
+  --C:#00ffff;--M:#ff00ff;--Y:#ffff00;
+  --display:"Suisse Intl","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --text:"Suisse Intl","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --h:clamp(220px,46vh,600px);
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg)}
+body{font-family:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+img{-webkit-user-drag:none;user-select:none;max-width:none}
+
+/* CMYK-Bild: vier Schichten, multipliziert = wieder Graustufen */
+.ink{position:relative;overflow:hidden;background:var(--bg);isolation:isolate;transform:translateZ(0)}
+.ink .ly{position:absolute;left:-7%;top:-7%;width:114%;height:114%;object-fit:cover;mix-blend-mode:multiply;pointer-events:none;backface-visibility:hidden}
+.ink.live .ly{will-change:transform}
+.ink.svgf .ly:nth-child(1){filter:url(#fC)}.ink.svgf .ly:nth-child(2){filter:url(#fM)}.ink.svgf .ly:nth-child(3){filter:url(#fY)}.ink.svgf .ly:nth-child(4){filter:url(#fK)}
+
+/* Start */
+.hero{position:relative;height:100vh;height:100svh;display:grid;grid-template-columns:1fr 1fr}
+.hero .ink{height:100%}
+#tt{position:fixed;left:0;top:0;width:100%;height:0;margin:0;z-index:12;pointer-events:none;transform-origin:50% 0;will-change:transform;
+  font:700 7vw/.86 var(--display);letter-spacing:-.045em;color:#fff;white-space:nowrap;text-shadow:0 0 40px rgba(0,0,0,.12)}
+#tt span{position:absolute}
+#tt .w1{right:50%;bottom:0}
+#tt .w2{left:50%;top:.02em}
+.about{position:absolute;z-index:5;right:max(24px,calc(env(safe-area-inset-right,0px) + 24px));bottom:calc(18vh + env(safe-area-inset-bottom,0px));
+  width:min(34ch,calc(50vw - 48px));margin:0;text-align:right;font:400 clamp(13px,1.05vw,16px)/1.35 var(--text);letter-spacing:-.01em;color:#fff;text-shadow:0 0 24px rgba(0,0,0,.25)}
+
+/* Projektstreifen (Prinzip wie tjarkscha.de) — noch leer */
+.proj{position:relative;height:calc(var(--h) + 10vh + 330px)}
+.scroller{position:absolute;inset:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;touch-action:pan-x pan-y}
+.scroller::-webkit-scrollbar{display:none}
+.strip{display:flex;align-items:flex-start;gap:6vw;height:100%;width:max-content;padding:9vh 24vw 0 calc(50vw - var(--h)*var(--r)/2)}
+.it{flex:none}
+.first{width:calc(var(--h)*var(--r))}
+.pic{height:var(--h);aspect-ratio:var(--a,1);flex:none}
+.first .pic{aspect-ratio:var(--r)}
+.cap{width:min(92vw,760px);margin-left:50%;transform:translateX(-50%);text-align:center}
+.cap h2{font:700 clamp(20px,1.9vw,30px)/1 var(--display);letter-spacing:-.04em;margin:26px 0 12px}
+.meta{font:400 11px/1.5 var(--mono);color:var(--mute);margin:0 0 16px}
+.desc{font:400 14px/1.45 var(--text);margin:0 auto;max-width:62ch}
+.fade{will-change:opacity,transform}
+/* Testrahmen statt Bilder (nur zum Probescrollen) */
+.frame{position:relative;border:1px solid var(--fg);background:var(--bg)}
+.frame b{position:absolute;left:8px;top:7px;font:400 11px/1 var(--mono);color:var(--mute)}
+
+/* Cursor: weisser Punkt, invertiert was darunter liegt */
+#cur{position:fixed;left:0;top:0;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;z-index:30;pointer-events:none;background:#fff;mix-blend-mode:difference;opacity:0;transition:opacity .2s;will-change:transform}
+/* Menü: Kreuz oben auf der Mittelachse */
+#mb{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top,0px));z-index:25;width:44px;height:44px;margin-left:-22px;padding:0;border:0;background:none;color:#fff;transition:color .3s}
+#mb i{position:absolute;left:50%;top:50%;width:24px;height:2px;margin:-1px 0 0 -12px;background:currentColor;transition:transform .45s cubic-bezier(.6,0,.2,1)}
+#mb i+i{transform:rotate(90deg)}
+#mb:focus-visible{outline:1px solid currentColor;outline-offset:2px}
+body.menu #mb{color:var(--fg)}
+body.menu #mb i{transform:rotate(45deg)}body.menu #mb i+i{transform:rotate(135deg)}
+#menu{position:fixed;inset:0;z-index:22;background:rgba(255,255,255,.82);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);opacity:0;pointer-events:none;transition:opacity .35s}
+body.menu #menu{opacity:1;pointer-events:auto}
+@media (pointer:fine){*{cursor:none !important}}
+
+@media (max-width:700px){
+  #tt{font-size:7.4vw}
+  .about{width:calc(100vw - 48px)}
+  .proj{height:auto}
+  .scroller{position:relative;inset:auto;scroll-snap-type:x proximity}
+  .strip{height:auto;gap:4vw;padding-bottom:12vh}
+}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="fC" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values=".2126 .7152 .0722 0 0  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0"/><feComponentTransfer><feFuncR type="gamma" exponent=".5"/></feComponentTransfer></filter>
+  <filter id="fM" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 1  .2126 .7152 .0722 0 0  0 0 0 0 1  0 0 0 1 0"/><feComponentTransfer><feFuncG type="gamma" exponent=".5"/></feComponentTransfer></filter>
+  <filter id="fY" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  .2126 .7152 .0722 0 0  0 0 0 1 0"/><feComponentTransfer><feFuncB type="gamma" exponent=".5"/></feComponentTransfer></filter>
+  <filter id="fK" color-interpolation-filters="sRGB"><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="gamma" exponent=".5"/><feFuncG type="gamma" exponent=".5"/><feFuncB type="gamma" exponent=".5"/></feComponentTransfer></filter>
+</svg>
+
+<h1 id="tt"><span class="w1">heartbreaking</span> <span class="w2">beauty</span></h1>
+<button id="mb" aria-label="Menü öffnen" aria-expanded="false" aria-controls="menu"><i></i><i></i></button>
+<nav id="menu" aria-hidden="true"><!-- Menüinhalt folgt --></nav>
+<div id="cur"></div>
+
+<section class="hero" id="hero">
+  <div class="ink" data-img="abriss" data-pos="42% 50%" data-m="34" data-z="40" data-tilt="5" data-hero="1" role="img" aria-label="Abriss eines Gründerzeithauses"></div>
+  <div class="ink" data-img="tape" data-pos="55% 45%" data-m="34" data-z="40" data-tilt="5" data-hero="1" role="img" aria-label="Blätter mit Klebeband-Markierungen"></div>
+  <p class="about" id="about">[description to follow]</p>
+</section>
+
+<!-- Rubriken folgen hier als <section class="proj"> -->
+
+<script>
+(function(){
+var SRC={abriss:'assets/abriss.jpg',tape:'assets/tape.jpg'};
+var RM=matchMedia('(prefers-reduced-motion: reduce)').matches,TOUCH=matchMedia('(hover: none)').matches;
+var W=innerWidth,H=innerHeight;
+function sm(a,b,x){x=Math.max(0,Math.min(1,(x-a)/(b-a)));return x*x*(3-2*x);}
+
+/* ---------- C, M, Y, K aus einem Graustufenbild erzeugen (einmal je Bild) ---------- */
+var cache={},MAXW=1600;
+function plates(key){
+  if(cache[key])return cache[key];
+  return cache[key]=new Promise(function(res){
+    var im=new Image();
+    im.onload=function(){
+      try{
+        var sc=Math.min(1,MAXW/im.naturalWidth),w=Math.round(im.naturalWidth*sc),h=Math.round(im.naturalHeight*sc);
+        var c=document.createElement('canvas');c.width=w;c.height=h;var x=c.getContext('2d');x.drawImage(im,0,0,w,h);
+        var p=x.getImageData(0,0,w,h).data,lut=new Uint8ClampedArray(256);
+        for(var i=0;i<256;i++)lut[i]=Math.round(Math.sqrt(i/255)*255); // je Schicht die Wurzel: C·M·Y·K-Produkt ergibt wieder den Grauwert
+        var outs=[0,1,2,3].map(function(k){
+          var o=x.createImageData(w,h),q=o.data;
+          for(var i=0;i<p.length;i+=4){var v=lut[p[i]];q[i]=k===0||k===3?v:255;q[i+1]=k===1||k===3?v:255;q[i+2]=k===2||k===3?v:255;q[i+3]=255;}
+          var cc=document.createElement('canvas');cc.width=w;cc.height=h;cc.getContext('2d').putImageData(o,0,0);return cc;
+        });
+        Promise.all(outs.map(function(cc){return new Promise(function(r){cc.toBlob(function(b){r(URL.createObjectURL(b));},'image/png');});})).then(res,function(){res(null);});
+      }catch(e){res(null);} // z. B. file:// → Fallback mit SVG-Filtern
+    };
+    im.onerror=function(){res(null);};
+    im.src=SRC[key];
+  });
+}
+
+/* ---------- Bruch-Effekt ---------- */
+var items=[].slice.call(document.querySelectorAll('.ink')).map(function(el){
+  var ly=[];for(var k=0;k<4;k++){var im=document.createElement('img');im.className='ly';im.alt='';im.draggable=false;im.decoding='async';im.style.objectPosition=el.dataset.pos||'50% 50%';el.appendChild(im);ly.push(im);}
+  plates(el.dataset.img).then(function(u){
+    if(u)ly.forEach(function(im,k){im.src=u[k];});
+    else{el.classList.add('svgf');ly.forEach(function(im){im.src=SRC[el.dataset.img];});}
+  });
+  var s={el:el,ly:ly,M:+(el.dataset.m||12),Z:+(el.dataset.z||0),T:+(el.dataset.tilt||0),hero:!!el.dataset.hero,tx:0,ty:0,ta:0,x:0,y:0,a:0,hov:false,rest:true,r:null};
+  function upd(e){
+    if(!s.r)s.r=el.getBoundingClientRect();
+    var r=s.r;s.tx=Math.max(-1.3,Math.min(1.3,(e.clientX-(r.left+r.width/2))/(r.width/2)));s.ty=Math.max(-1.3,Math.min(1.3,(e.clientY-(r.top+r.height/2))/(r.height/2)));
+    s.ta=1;s.hov=true;wake(s);
+  }
+  el.addEventListener('pointerenter',function(e){s.r=el.getBoundingClientRect();upd(e);});
+  el.addEventListener('pointermove',upd,{passive:true});
+  el.addEventListener('pointerleave',function(){s.ta=0;s.hov=false;s.r=null;});
+  return s;
+});
+function wake(s){if(s.rest){s.rest=false;s.el.classList.add('live');}}
+
+function paint(s){
+  var len=Math.hypot(s.x,s.y),ux=len>.02?s.x/len:1,uy=len>.02?s.y/len:0;
+  var d=s.M*s.a*(.3+.7*Math.min(1,len)),z=s.Z*s.a,pre='';
+  if(s.T)pre='perspective(1200px) rotateX('+(-s.y*s.T*s.a).toFixed(2)+'deg) rotateY('+(s.x*s.T*s.a).toFixed(2)+'deg) ';
+  // C, M, Y brechen in drei Richtungen weg (120°), K bleibt als Gerüst
+  for(var k=0;k<3;k++){
+    var an=k*2.0944,cx=Math.cos(an),cy=Math.sin(an),dx=(ux*cx-uy*cy)*d,dy=(ux*cy+uy*cx)*d;
+    s.ly[k].style.transform=pre+'translate3d('+dx.toFixed(1)+'px,'+dy.toFixed(1)+'px,'+(z*(1-k*.5)).toFixed(1)+'px)';
+  }
+  s.ly[3].style.transform=pre+'translate3d(0,0,'+(-z*.4).toFixed(1)+'px)';
+}
+
+/* ---------- Titel, Fades ---------- */
+var hero=document.getElementById('hero'),tt=document.getElementById('tt'),w1=tt.querySelector('.w1');
+var fades=[].slice.call(document.querySelectorAll('.fade'));
+fades.forEach(function(el){el._sec=el.closest('.proj');el._pic=el.classList.contains('pic')?el:el.querySelector('.pic');});
+var projs=[].slice.call(document.querySelectorAll('.proj')),F=1,lastY=-1;
+function layout(){W=innerWidth;H=innerHeight;F=w1.offsetHeight||1;lastY=-1;}
+addEventListener('resize',layout);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(layout);
+layout();
+
+var lastPtr=0;
+addEventListener('pointermove',function(){lastPtr=performance.now();},{passive:true});
+
+function tick(t){
+  var y=scrollY,i;
+  if(fades.length){ // erst lesen, dann schreiben
+    var pr=projs.map(function(p){return p.getBoundingClientRect();}),fr=fades.map(function(el){return el._pic.getBoundingClientRect();});
+    projs.forEach(function(sec,j){var r=pr[j];sec._ov=1-sm(.28,.6,Math.abs(r.top+r.height/2-H/2)/H);});
+    fades.forEach(function(el,j){var r=fr[j],oh=Math.min(sm(0,W*.5,r.right),sm(W,W*.5,r.left)),ov=el._sec._ov;el.style.opacity=(oh*ov).toFixed(3);el.style.transform='translateY('+((1-ov)*14).toFixed(1)+'px)';});
+  }
+  if(y!==lastY){
+    lastY=y;
+    var p=sm(0,H*.75,y),tf=Math.max(15,Math.min(19,W*.012))*.86,s=1+(tf/F-1)*p,y0=H/2,y1=16+tf;
+    tt.style.transform='translate3d(0,'+(y0+(y1-y0)*p).toFixed(1)+'px,0) scale('+s.toFixed(4)+')';
+    var g=Math.round(255*(1-p));tt.style.color='rgb('+g+','+g+','+g+')';tt.style.textShadow=p>.01?'none':'';
+    hero.style.opacity=1-sm(H*.15,H*.8,y);
+  }
+
+  // Bruch-Effekt; ohne Maus (Touch) bewegt sich der Hero langsam von selbst
+  var ambient=TOUCH&&!RM&&y<H&&t-lastPtr>2500;
+  for(i=0;i<items.length;i++){
+    var s2=items[i];
+    if(s2.hero&&ambient&&!s2.hov){s2.tx=Math.cos(t/2600+i*2);s2.ty=Math.sin(t/3100+i)*.6;s2.ta=.3;wake(s2);}
+    if(s2.rest)continue;
+    var e=RM?1:.09,ea=RM?1:.07;
+    s2.x+=(s2.tx-s2.x)*e;s2.y+=(s2.ty-s2.y)*e;s2.a+=(s2.ta-s2.a)*ea;
+    if(s2.ta===0&&s2.a<.002){s2.a=0;paint(s2);s2.rest=true;s2.el.classList.remove('live');continue;}
+    paint(s2);
+  }
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+
+/* ---------- Ziehen zum Scrollen (Maus) ---------- */
+[].forEach.call(document.querySelectorAll('.scroller'),function(el){
+  var down=false,sx=0,sl=0,moved=false;
+  el.addEventListener('pointerdown',function(e){if(e.pointerType!=='mouse')return;down=true;moved=false;sx=e.clientX;sl=el.scrollLeft;});
+  addEventListener('pointermove',function(e){if(!down)return;var dx=e.clientX-sx;if(Math.abs(dx)>5)moved=true;el.scrollLeft=sl-dx;});
+  addEventListener('pointerup',function(){down=false;});
+  el.addEventListener('click',function(e){if(moved){e.stopPropagation();e.preventDefault();moved=false;}},true);
+});
+addEventListener('scroll',function(){items.forEach(function(s){s.r=null;});},{passive:true});
+
+/* ---------- Menü ---------- */
+var mb=document.getElementById('mb'),menu=document.getElementById('menu');
+function setMenu(on){document.body.classList.toggle('menu',on);mb.setAttribute('aria-expanded',on);mb.setAttribute('aria-label',on?'Menü schließen':'Menü öffnen');menu.setAttribute('aria-hidden',!on);}
+mb.addEventListener('click',function(){setMenu(!document.body.classList.contains('menu'));});
+menu.addEventListener('click',function(e){if(e.target===menu)setMenu(false);});
+addEventListener('keydown',function(e){if(e.key==='Escape')setMenu(false);});
+
+/* ---------- Cursor ---------- */
+var cur=document.getElementById('cur'),px=-99,py=-99,cx=-99,cy=-99;
+addEventListener('pointermove',function(e){if(e.pointerType!=='mouse')return;px=e.clientX;py=e.clientY;cur.style.opacity=1;},{passive:true});
+document.documentElement.addEventListener('mouseleave',function(){cur.style.opacity=0;});
+(function cl(t){
+  var e=RM?1:.45;cx+=(px-cx)*e;cy+=(py-cy)*e;
+  cur.style.transform='translate3d('+cx.toFixed(1)+'px,'+cy.toFixed(1)+'px,0)';
+  requestAnimationFrame(cl);
+})();
+})();
+</script>
