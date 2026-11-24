@@ -5,7 +5,7 @@ Statische Seite ohne Build-Schritt.
 ```
 index.html   Seite (HTML, CSS, JS inline)
 assets/      Bilder (Graustufen; die C/M/Y/K-Schichten erzeugt der Browser)
-fonts/       Suisse Intl Bold + Regular als .woff2
+fonts/       Suisse Intl Bold, Regular und Mono als .woff2
 .nojekyll    GitHub Pages liefert die Dateien unverändert aus
 ```
 
