@@ -67,8 +67,8 @@ img{-webkit-user-drag:none;user-select:none;max-width:none}
 /* Cursor: weisser Punkt, invertiert was darunter liegt */
 #cur{position:fixed;left:0;top:0;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;z-index:30;pointer-events:none;background:#fff;mix-blend-mode:difference;opacity:0;transition:opacity .2s;will-change:transform}
 /* Menü: Kreuz oben auf der Mittelachse */
-#mb{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top,0px));z-index:25;width:44px;height:44px;margin-left:-22px;padding:0;border:0;background:none;color:#fff;transition:color .3s}
-#mb i{position:absolute;left:50%;top:50%;width:24px;height:2px;margin:-1px 0 0 -12px;background:currentColor;transition:transform .45s cubic-bezier(.6,0,.2,1)}
+#mb{position:fixed;left:50%;top:calc(10px + env(safe-area-inset-top,0px));z-index:25;width:64px;height:64px;margin-left:-32px;padding:0;border:0;background:none;color:#fff;transition:color .3s}
+#mb i{position:absolute;left:50%;top:50%;width:42px;height:3px;margin:-1.5px 0 0 -21px;background:currentColor;transition:transform .45s cubic-bezier(.6,0,.2,1)}
 #mb i+i{transform:rotate(90deg)}
 #mb:focus-visible{outline:1px solid currentColor;outline-offset:2px}
 body.menu #mb{color:var(--fg)}
