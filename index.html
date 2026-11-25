@@ -52,43 +52,61 @@ img{-webkit-user-drag:none;user-select:none;max-width:none}
 .about{position:absolute;z-index:5;right:max(24px,calc(env(safe-area-inset-right,0px) + 24px));bottom:calc(18vh + env(safe-area-inset-bottom,0px));
   width:min(34ch,calc(50vw - 48px));margin:0;text-align:right;font:400 clamp(11px,.85vw,13px)/1.45 var(--mono);letter-spacing:0;color:#fff;text-shadow:0 0 24px rgba(0,0,0,.25)}
 
-/* Projektstreifen (Prinzip wie tjarkscha.de) — noch leer */
-.proj{position:relative;height:calc(var(--h) + 10vh + 330px)}
-.scroller{position:absolute;inset:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;touch-action:pan-x pan-y}
+/* Archiv: jede Diskussion (Are.na-Kanal) ist ein horizontaler Streifen, jedes Bild trägt seine Annotation */
+#archive{position:relative;z-index:1;background:var(--bg)}
+.disc{position:relative;padding-block:16vh 2vh;scroll-margin-top:60px}
+.disc>header{text-align:center;padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px));margin-bottom:5vh}
+.disc h2{font:700 clamp(22px,2.2vw,34px)/1 var(--display);letter-spacing:-.04em;margin:0 0 12px;text-wrap:balance}
+.disc .meta{font:400 11px/1.5 var(--mono);color:var(--mute);margin:0}
+.disc .meta a{color:inherit;text-decoration:none;border-bottom:1px solid currentColor}
+.disc .ddesc{font:400 12px/1.55 var(--mono);max-width:58ch;margin:14px auto 0}
+.disc .ddesc p{margin:0 0 .6em}
+.scroller{position:relative;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;touch-action:pan-x pan-y}
 .scroller::-webkit-scrollbar{display:none}
-.strip{display:flex;align-items:flex-start;gap:6vw;height:100%;width:max-content;padding:9vh 24vw 0 calc(50vw - var(--h)*var(--r)/2)}
-.it{flex:none}
-.first{width:calc(var(--h)*var(--r))}
-.pic{height:var(--h);aspect-ratio:var(--a,1);flex:none}
-.first .pic{aspect-ratio:var(--r)}
-.cap{width:min(92vw,760px);margin-left:50%;transform:translateX(-50%);text-align:center}
-.cap h2{font:700 clamp(20px,1.9vw,30px)/1 var(--display);letter-spacing:-.04em;margin:26px 0 12px}
-.meta{font:400 11px/1.5 var(--mono);color:var(--mute);margin:0 0 16px}
-.desc{font:400 14px/1.45 var(--text);margin:0 auto;max-width:62ch}
+.strip{display:flex;align-items:flex-start;gap:5vw;width:max-content;padding:0 24vw 4vh max(16px,calc(50vw - var(--w0,300px)/2));min-height:calc(var(--h) + 120px)}
+.blk{flex:none;width:min(calc(var(--h) * var(--a,1)),86vw);margin:0}
+.blk .im{aspect-ratio:var(--a,1);width:100%;background:#efefef;overflow:hidden}
+.blk .im img{display:block;width:100%;height:100%;object-fit:cover;-webkit-user-drag:none;user-select:none}
+.blk.txt{width:min(360px,78vw)}
+.blk.txt .im{aspect-ratio:auto;height:var(--h);background:none;border:1px solid var(--fg);padding:18px;overflow:auto;font:400 12px/1.55 var(--mono)}
+.blk.txt .im p{margin:0 0 .8em}
+.blk figcaption{margin-top:14px}
+.blk .t{font:700 13px/1.25 var(--display);letter-spacing:-.01em;margin:0 0 6px}
+.blk .d{font:400 11.5px/1.55 var(--mono);margin:0}
+.blk .d p{margin:0 0 .6em}
+.blk .d a,.blk.txt a{color:inherit}
+.blk .c{display:inline-block;margin-top:8px;font:400 11px/1.4 var(--mono);color:var(--mute);text-decoration:none;border-bottom:1px solid currentColor}
+.blk.wait .im{height:var(--h);aspect-ratio:auto;background:linear-gradient(90deg,#f1f1f1,#e6e6e6,#f1f1f1) 0 0/200% 100%;animation:shim 1.4s linear infinite}
+@keyframes shim{to{background-position:-200% 0}}
 .fade{will-change:opacity,transform}
-/* Testrahmen statt Bilder (nur zum Probescrollen) */
-.frame{position:relative;border:1px solid var(--fg);background:var(--bg)}
-.frame b{position:absolute;left:8px;top:7px;font:400 11px/1 var(--mono);color:var(--mute)}
 
+/* Weisses Band oben, sobald man im Archiv ist: Titel und Kreuz bleiben lesbar */
+#bar{position:fixed;left:0;right:0;top:0;height:calc(118px + env(safe-area-inset-top,0px));z-index:11;pointer-events:none;opacity:0;background:linear-gradient(var(--bg) 72%,rgba(255,255,255,0))}
 /* Cursor: weisser Punkt, invertiert was darunter liegt */
 #cur{position:fixed;left:0;top:0;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;z-index:30;pointer-events:none;background:#fff;mix-blend-mode:difference;opacity:0;transition:opacity .2s;will-change:transform}
 /* Menü: Kreuz oben auf der Mittelachse */
-#mb{position:fixed;left:50%;top:calc(10px + env(safe-area-inset-top,0px));z-index:25;width:64px;height:64px;margin-left:-32px;padding:0;border:0;background:none;color:#fff;transition:color .3s}
+#mb{position:fixed;left:50%;top:calc(10px + env(safe-area-inset-top,0px));z-index:25;width:64px;height:64px;margin-left:-32px;padding:0;border:0;background:none;color:#fff;mix-blend-mode:difference}
 #mb i{position:absolute;left:50%;top:50%;width:30px;height:5px;margin:-2.5px 0 0 -15px;background:currentColor;transition:transform .45s cubic-bezier(.6,0,.2,1)}
 #mb i+i{transform:rotate(90deg)}
 #mb:focus-visible{outline:1px solid currentColor;outline-offset:2px}
-body.menu #mb{color:var(--fg)}
+body.menu #mb{color:var(--fg);mix-blend-mode:normal}
 body.menu #mb i{transform:rotate(45deg)}body.menu #mb i+i{transform:rotate(135deg)}
 #menu{position:fixed;inset:0;z-index:22;background:rgba(255,255,255,.82);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);opacity:0;pointer-events:none;transition:opacity .35s}
 body.menu #menu{opacity:1;pointer-events:auto}
+#menu{display:flex;align-items:center;justify-content:center;overflow:auto;padding:96px max(16px,env(safe-area-inset-right,0px)) 48px max(16px,env(safe-area-inset-left,0px))}
+#menu ol{list-style:none;margin:0;padding:0;text-align:center;display:grid;gap:14px}
+#menu a{color:var(--fg);text-decoration:none;font:700 clamp(22px,3vw,40px)/1 var(--display);letter-spacing:-.04em}
+#menu a small{display:block;margin-top:4px;font:400 11px/1.3 var(--mono);letter-spacing:0;color:var(--mute)}
+#menu a:hover,#menu a:focus-visible{text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:6px;outline:none}
+#menu .ext a{font:400 11px/1.3 var(--mono);letter-spacing:0;border-bottom:1px solid currentColor}
 @media (pointer:fine){*{cursor:none !important}}
 
 @media (max-width:700px){
   #tt{font-size:6.4vw}
   .about{width:calc(100vw - 48px)}
-  .proj{height:auto}
-  .scroller{position:relative;inset:auto;scroll-snap-type:x proximity}
-  .strip{height:auto;gap:4vw;padding-bottom:12vh}
+  .scroller{scroll-snap-type:x proximity}
+  .strip{gap:6vw}
+  .blk{scroll-snap-align:center}
 }
 </style>
 
@@ -99,9 +117,10 @@ body.menu #menu{opacity:1;pointer-events:auto}
   <filter id="fK" color-interpolation-filters="sRGB"><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="gamma" exponent=".5"/><feFuncG type="gamma" exponent=".5"/><feFuncB type="gamma" exponent=".5"/></feComponentTransfer></filter>
 </svg>
 
+<div id="bar" aria-hidden="true"></div>
 <h1 id="tt"><span class="w1">heartbreaking</span> <span class="w2">beauty</span></h1>
 <button id="mb" aria-label="Menü öffnen" aria-expanded="false" aria-controls="menu"><i></i><i></i></button>
-<nav id="menu" aria-hidden="true"><!-- Menüinhalt folgt --></nav>
+<nav id="menu" aria-hidden="true"><ol id="toc"></ol></nav>
 <div id="cur"></div>
 
 <section class="hero" id="hero">
@@ -110,7 +129,8 @@ body.menu #menu{opacity:1;pointer-events:auto}
   <p class="about" id="about">[description to follow]</p>
 </section>
 
-<!-- Rubriken folgen hier als <section class="proj"> -->
+<!-- Archiv: wird aus den Are.na-Kanälen der Gruppe erzeugt -->
+<main id="archive" aria-label="Diskussionen"></main>
 
 <script>
 (function(){
@@ -184,10 +204,13 @@ function stepFX(t,ambient){
 }
 
 /* ---------- Titel, Fades ---------- */
-var hero=document.getElementById('hero'),tt=document.getElementById('tt'),w1=tt.querySelector('.w1');
-var fades=[].slice.call(document.querySelectorAll('.fade'));
-fades.forEach(function(el){el._sec=el.closest('.proj');el._pic=el.classList.contains('pic')?el:el.querySelector('.pic');});
-var projs=[].slice.call(document.querySelectorAll('.proj')),F=1,lastY=-1;
+var bar=document.getElementById('bar'),hero=document.getElementById('hero'),tt=document.getElementById('tt'),w1=tt.querySelector('.w1');
+var fades=[],projs=[],F=1,lastY=-1;
+function collect(){
+  projs=[].slice.call(document.querySelectorAll('.disc'));
+  fades=[].slice.call(document.querySelectorAll('.fade'));
+  fades.forEach(function(el){el._sec=el.closest('.disc');el._pic=el.querySelector('.im')||el;});
+}
 function layout(){W=innerWidth;H=innerHeight;F=w1.offsetHeight||1;lastY=-1;rects();}
 addEventListener('resize',layout);
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(layout);
@@ -200,15 +223,15 @@ function tick(t){
   var y=scrollY,i;
   if(fades.length){ // erst lesen, dann schreiben
     var pr=projs.map(function(p){return p.getBoundingClientRect();}),fr=fades.map(function(el){return el._pic.getBoundingClientRect();});
-    projs.forEach(function(sec,j){var r=pr[j];sec._ov=1-sm(.28,.6,Math.abs(r.top+r.height/2-H/2)/H);});
+    projs.forEach(function(sec,j){var r=pr[j];sec._ov=1-sm(.34,.7,Math.abs(r.top+r.height/2-H/2)/H);});
     fades.forEach(function(el,j){var r=fr[j],oh=Math.min(sm(0,W*.5,r.right),sm(W,W*.5,r.left)),ov=el._sec._ov;el.style.opacity=(oh*ov).toFixed(3);el.style.transform='translateY('+((1-ov)*14).toFixed(1)+'px)';});
   }
   if(y!==lastY){
     lastY=y;
-    var p=sm(0,H*.75,y),tf=Math.max(15,Math.min(19,W*.012))*.86,s=1+(tf/F-1)*p,y0=H/2,y1=16+tf;
+    var p=sm(0,H*.75,y),tf=Math.max(15,Math.min(19,W*.012))*.86,s=1+(tf/F-1)*p,y0=H/2,y1=82; // klein: unter dem Kreuz
     tt.style.transform='translate3d(0,'+(y0+(y1-y0)*p).toFixed(1)+'px,0) scale('+s.toFixed(4)+')';
     var g=Math.round(255*(1-p));tt.style.color='rgb('+g+','+g+','+g+')';tt.style.textShadow=p>.01?'none':'';
-    hero.style.opacity=1-sm(H*.15,H*.8,y);
+    hero.style.opacity=1-sm(H*.15,H*.8,y);bar.style.opacity=sm(H*.6,H*.95,y).toFixed(3);
   }
 
   // Bruch-Effekt; ohne Maus (Touch) wandert die Bruchstelle langsam von selbst
@@ -218,14 +241,110 @@ function tick(t){
 requestAnimationFrame(tick);
 
 /* ---------- Ziehen zum Scrollen (Maus) ---------- */
-[].forEach.call(document.querySelectorAll('.scroller'),function(el){
-  var down=false,sx=0,sl=0,moved=false;
-  el.addEventListener('pointerdown',function(e){if(e.pointerType!=='mouse')return;down=true;moved=false;sx=e.clientX;sl=el.scrollLeft;});
-  addEventListener('pointermove',function(e){if(!down)return;var dx=e.clientX-sx;if(Math.abs(dx)>5)moved=true;el.scrollLeft=sl-dx;});
-  addEventListener('pointerup',function(){down=false;});
-  el.addEventListener('click',function(e){if(moved){e.stopPropagation();e.preventDefault();moved=false;}},true);
-});
+var drag=null,dragMoved=false;
+function dragScroll(el){
+  el.addEventListener('pointerdown',function(e){if(e.pointerType!=='mouse'||e.button!==0)return;drag={el:el,x:e.clientX,l:el.scrollLeft};dragMoved=false;});
+  el.addEventListener('click',function(e){if(dragMoved){e.stopPropagation();e.preventDefault();dragMoved=false;}},true);
+}
+addEventListener('pointermove',function(e){if(!drag)return;var dx=e.clientX-drag.x;if(Math.abs(dx)>5)dragMoved=true;drag.el.scrollLeft=drag.l-dx;});
+addEventListener('pointerup',function(){drag=null;});
 addEventListener('scroll',function(){items.forEach(function(s){s.r=null;});},{passive:true});
+
+/* ---------- Archiv aus Are.na ----------
+   Gruppe → Kanäle (= Diskussionen) → Blöcke (= annotierte Bilder).
+   Öffentliche Kanäle sind ohne Token lesbar. Fallback: arena.json im Repo, in der Vorschau Beispieldaten. */
+var ARENA={api:'https://api.are.na/v3',group:'heartbreaking-beauty-1yelzgdnwcu',web:'https://www.are.na/'};
+var archive=document.getElementById('archive'),toc=document.getElementById('toc');
+function getJSON(u){return fetch(u,{headers:{Accept:'application/json'}}).then(function(r){if(!r.ok)throw new Error(r.status+' '+u);return r.json();});}
+function md(x){return x&&(x.html||x.plain)||'';}
+var OK_TAGS={P:1,BR:1,A:1,EM:1,STRONG:1,B:1,I:1,UL:1,OL:1,LI:1,CODE:1,BLOCKQUOTE:1,H1:1,H2:1,H3:1,H4:1,DEL:1,HR:1};
+function clean(html){ // Annotationen sind Markdown von Are.na; nur einfache Auszeichnungen und sichere Links durchlassen
+  var d=new DOMParser().parseFromString('<div>'+html+'</div>','text/html').body.firstChild;
+  (function walk(n){[].slice.call(n.children).forEach(function(c){
+    if(!OK_TAGS[c.tagName]){c.replaceWith(document.createTextNode(c.textContent));return;}
+    [].slice.call(c.attributes).forEach(function(a){if(!(c.tagName==='A'&&a.name==='href'&&/^(https?:|mailto:)/i.test(a.value)))c.removeAttribute(a.name);});
+    if(c.tagName==='A'){c.target='_blank';c.rel='noopener';}
+    walk(c);
+  });})(d);
+  return d.innerHTML;
+}
+function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;}
+function niceTitle(t){var m=/^(\d{4})(\d{2})(\d{2})$/.exec((t||'').trim());return m?(+m[3])+'.'+(+m[2])+'.'+m[1]:(t||'');}
+function sortKey(c){return /^\d{8}$/.test((c.title||'').trim())?c.title.trim():(c.created_at||'').replace(/\D/g,'').slice(0,8);}
+
+function blockEl(b){
+  var img=b.image||null,isText=b.type==='Text';
+  if(!img&&!isText)return null; // Links/Anhänge ohne Vorschaubild auslassen
+  var f=el('figure','blk fade'+(isText?' txt':''));
+  var box=el('div','im');
+  if(isText){box.innerHTML=clean(md(b.content));}
+  else{
+    var a=img.aspect_ratio||(img.width&&img.height?img.width/img.height:1);
+    f.style.setProperty('--a',Math.max(.4,Math.min(2.6,a)).toFixed(4));
+    var i=new Image(),v=img.large||img.medium||{};i.alt=img.alt_text||b.title||'';i.loading='lazy';i.decoding='async';i.draggable=false;
+    i.src=v.src||img.src;if(v.src_2x)i.srcset=v.src+' 1x, '+v.src_2x+' 2x';box.appendChild(i);
+  }
+  f.appendChild(box);
+  var cap=el('figcaption'),has=false;
+  if(b.title&&!isText){cap.appendChild(el('p','t')).textContent=b.title;has=true;}
+  if(b.description&&md(b.description)){cap.appendChild(el('div','d',clean(md(b.description))));has=true;}
+  if(b.comment_count){var c=el('a','c');c.href=ARENA.web+'block/'+b.id;c.target='_blank';c.rel='noopener';c.textContent=b.comment_count+(b.comment_count===1?' comment':' comments')+' ↗';cap.appendChild(c);has=true;}
+  if(has)f.appendChild(cap);
+  return f;
+}
+function sectionEl(ch){
+  var s=el('section','disc');s.id='d-'+ch.slug;
+  var h=el('header');h.appendChild(el('h2')).textContent=niceTitle(ch.title);
+  var n=ch.counts&&ch.counts.contents,meta=el('p','meta');
+  meta.innerHTML=(n?n+(n===1?' item':' items')+' · ':'')+'<a target="_blank" rel="noopener">are.na ↗</a>';
+  meta.querySelector('a').href=ARENA.web+(ch.owner&&ch.owner.slug||ARENA.group)+'/'+ch.slug;h.appendChild(meta);
+  if(ch.description&&md(ch.description))h.appendChild(el('div','ddesc',clean(md(ch.description))));
+  s.appendChild(h);
+  var sc=el('div','scroller'),st=el('div','strip');sc.appendChild(st);s.appendChild(sc);dragScroll(sc);
+  for(var k=0;k<Math.min(3,n||3);k++){var ph=el('figure','blk wait');ph.appendChild(el('div','im'));st.appendChild(ph);}
+  s._strip=st;s._ch=ch;return s;
+}
+function fill(s,blocks){
+  var st=s._strip;st.textContent='';
+  blocks.forEach(function(b){var e=blockEl(b);if(e)st.appendChild(e);});
+  var first=st.firstElementChild;
+  if(!first){s.remove();collect();return;}
+  st.style.setProperty('--w0',first.getBoundingClientRect().width+'px');
+  collect();
+}
+function render(chans,loadBlocks){
+  chans.sort(function(a,b){return sortKey(b)<sortKey(a)?-1:1;}); // neueste Diskussion zuerst
+  archive.textContent='';toc.textContent='';
+  chans.forEach(function(ch){
+    var s=sectionEl(ch);archive.appendChild(s);
+    var li=el('li'),a=el('a');a.href='#'+s.id;a.innerHTML='<span></span><small></small>';
+    a.firstChild.textContent=niceTitle(ch.title);a.lastChild.textContent=(ch.counts&&ch.counts.contents||0)+' items';
+    a.addEventListener('click',function(){setMenu(false);});li.appendChild(a);toc.appendChild(li);
+  });
+  var ext=el('li','ext'),ea=el('a');ea.href=ARENA.web+ARENA.group;ea.target='_blank';ea.rel='noopener';ea.textContent='are.na ↗';ext.appendChild(ea);toc.appendChild(ext);
+  collect();
+  // Inhalte erst laden, wenn eine Diskussion in die Nähe kommt (schont das Abfragelimit)
+  var io='IntersectionObserver' in window?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){io.unobserve(e.target);loadBlocks(e.target);}});},{rootMargin:'120% 0px'}):null;
+  [].forEach.call(archive.children,function(s){io?io.observe(s):loadBlocks(s);});
+}
+function fromAPI(){
+  return getJSON(ARENA.api+'/groups/'+ARENA.group+'/contents?type=Channel&per=100&sort=created_at_desc').then(function(r){
+    var chans=(r.data||[]).filter(function(c){return c.type==='Channel'||c.base_type==='Channel'||c.slug;});
+    render(chans,function(s){
+      getJSON(ARENA.api+'/channels/'+s._ch.slug+'/contents?per=100&sort=position_asc')
+        .then(function(r){fill(s,r.data||[]);},function(e){console.warn('Are.na',e);fill(s,[]);});
+    });
+  });
+}
+function fromSnapshot(d){ // { channels:[{…Channel, contents:[…Blocks]}] }
+  var chans=d.channels||[];render(chans,function(s){fill(s,s._ch.contents||[]);});
+}
+fromAPI().catch(function(e){
+  console.warn('Are.na API nicht erreichbar, nutze Snapshot',e);
+  return getJSON('arena.json').then(fromSnapshot);
+}).catch(function(){
+  if(window.HB_SAMPLE)fromSnapshot(window.HB_SAMPLE);
+});
 
 /* ---------- Menü ---------- */
 var mb=document.getElementById('mb'),menu=document.getElementById('menu');
